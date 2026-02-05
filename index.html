@@ -1,0 +1,184 @@
+<!-- redeploy -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Security Check</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: #f1f3f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .card {
+      background: white;
+      width: 360px;
+      padding: 24px;
+      border-radius: 8px;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.15);
+    }
+
+    .captcha-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+    }
+
+    .checkbox {
+      width: 24px;
+      height: 24px;
+      border: 2px solid #9aa0a6;
+      border-radius: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: #1a73e8;
+    }
+
+    .loading {
+      border: 3px solid #ccc;
+      border-top: 3px solid #1a73e8;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      100% { transform: rotate(360deg); }
+    }
+
+    .small {
+      font-size: 11px;
+      color: #5f6368;
+      margin-left: auto;
+      text-align: right;
+    }
+
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 10px;
+      background: #1a73e8;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    /* Grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      margin-top: 12px;
+    }
+
+    .grid img {
+      width: 100%;
+      border-radius: 4px;
+      cursor: pointer;
+      border: 3px solid transparent;
+      transition: transform 0.2s, border 0.2s;
+    }
+
+    .grid img:hover {
+      transform: scale(1.05);
+    }
+
+    .grid img.selected {
+      border-color: #1a73e8;
+    }
+
+    /* Valentine's screen */
+    .valentine {
+      text-align: center;
+      padding: 30px;
+    }
+
+    .heart {
+      font-size: 50px;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      50% { transform: scale(1.2); }
+    }
+  </style>
+</head>
+<body>
+
+<div class="card" id="step1">
+  <div class="captcha-row" onclick="verifyRobot()">
+    <div class="checkbox" id="checkbox"></div>
+    <span>I’m not a robot</span>
+    <div class="small">
+      reCAPTCHA<br>Privacy – Terms
+    </div>
+  </div>
+</div>
+
+<div class="card" id="step2" style="display:none">
+  <h4>Select your Valentine</h4>
+  <p style="font-size:13px;color:#5f6368">
+    Select all images containing your Valentine
+  </p>
+
+  <div class="grid">
+    <img src="me1.jpg" onclick="select(this)">
+    <img src="me2.jpg" onclick="select(this)">
+    <img src="me3.jpg" onclick="select(this)">
+    <img src="me1.jpg" onclick="select(this)">
+    <img src="me2.jpg" onclick="select(this)">
+    <img src="me3.jpg" onclick="select(this)">
+    <img src="me1.jpg" onclick="select(this)">
+    <img src="me2.jpg" onclick="select(this)">
+    <img src="me3.jpg" onclick="select(this)">
+  </div>
+
+  <button onclick="verifyImages()">Verify</button>
+</div>
+
+<div class="card valentine" id="step3" style="display:none">
+  <div class="heart">❤️</div>
+  <h1>Happy Valentine’s Day</h1>
+  <p>You passed the test perfectly 😉</p>
+</div>
+
+<script>
+  function verifyRobot() {
+    const box = document.getElementById("checkbox");
+    box.innerHTML = '<div class="loading"></div>';
+
+    setTimeout(() => {
+      box.innerHTML = '✔';
+      document.getElementById("step1").style.display = "none";
+      document.getElementById("step2").style.display = "block";
+    }, 1200);
+  }
+
+  function select(img) {
+    img.classList.toggle("selected");
+  }
+
+  function verifyImages() {
+    if (document.querySelectorAll(".selected").length === 9) {
+      document.getElementById("step2").style.display = "none";
+      document.getElementById("step3").style.display = "block";
+    } else {
+      alert("Please select all images 💙");
+    }
+  }
+</script>
+
+</body>
+</html>
